@@ -60,7 +60,6 @@ const logout = () => {
   // Clear user and token from localStorage and Cookies
   localStorage.removeItem('user');
   Cookies.remove('token');
-  window.location.href = "/";
 };
 
 const authService = {

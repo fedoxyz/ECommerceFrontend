@@ -9,6 +9,7 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { isAuthenticated, user } = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   
@@ -45,7 +46,7 @@ const Header = () => {
                 <Link to="/cart" style={styles.navLink}>Cart</Link>
               </li>
               <li style={styles.navItem}>
-                <Link to="/profile" style={styles.navLink}>Profile</Link>
+                <Link to="/profile-settings" style={styles.navLink}>Profile</Link>
               </li>
               <li style={styles.navItem}>
                 <button 

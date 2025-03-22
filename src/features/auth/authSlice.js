@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import authService from './authService';
 
 // Get user from localStorage
@@ -14,6 +14,8 @@ const initialState = {
     message: '',
   }
 };
+
+export const updateUser = createAction('auth/updateUser');
 
 // Helper function for error handling in thunks
 const handleError = (error) => {
@@ -65,8 +67,8 @@ export const login = createAsyncThunk(
 // Logout user
 export const logout = createAsyncThunk(
   'auth/logout',
-  async () => {
-    await authService.logout();
+  () => {
+    authService.logout();
   }
 );
 
@@ -127,6 +129,10 @@ const authSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.status = 'failed';
         state.message = action.payload || 'Logout failed';
+      })
+      .addCase(updateUser, (state, action) => {
+        state.user = { ...state.user, ...action.payload };
+        localStorage.setItem('user', JSON.stringify(state.user));
       });
       
     // Note: We removed the addMatcher approach since addCase must come first

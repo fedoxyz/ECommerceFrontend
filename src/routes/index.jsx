@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
+import CartPage from '../pages/CartPage';
+import ProfilePage from '../pages/ProfilePage';
 
 // Protected route component
 import ProtectedRoute from './ProtectedRoute';
@@ -16,7 +18,6 @@ const AppRoutes = () => {
       <Route path="/register" element={<AuthRoute><RegisterPage /></AuthRoute>} />
       
       {/* Protected routes */}
-      {/* 
       <Route 
         path="/cart" 
         element={
@@ -26,14 +27,14 @@ const AppRoutes = () => {
         } 
       />
       <Route 
-        path="/profile" 
+        path="/profile-settings" 
         element={
           <ProtectedRoute>
             <ProfilePage />
           </ProtectedRoute>
         } 
       /> 
-      */}
+    
       
       {/* 404 route - must be last */}
       <Route path="*" element={<NotFound />} />

@@ -24,8 +24,6 @@ const LoginForm = ({ onLoginSuccess, footer }) => {
 
   // Reset error when component mounts
   useEffect(() => {
-    console.log(otp.required)
-    console.log(status)
     if (status === "failed") {
       setError(message);
     } else if (status === "succeeded" && user) {
