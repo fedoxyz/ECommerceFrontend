@@ -4,6 +4,8 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import CartPage from '../pages/CartPage';
 import ProfilePage from '../pages/ProfilePage';
+import CategoryPage from '../pages/CategoryPage';
+import ProductsPage from '../pages/ProductsPage';
 
 // Protected route component
 import ProtectedRoute from './ProtectedRoute';
@@ -32,6 +34,19 @@ const AppRoutes = () => {
           <ProtectedRoute>
             <ProfilePage />
           </ProtectedRoute>
+        } 
+      /> 
+
+      <Route 
+        path="/categories" 
+        element={
+            <CategoryPage />
+        } 
+      /> 
+      <Route 
+        path="/products" 
+        element={
+            <ProductsPage />
         } 
       /> 
     

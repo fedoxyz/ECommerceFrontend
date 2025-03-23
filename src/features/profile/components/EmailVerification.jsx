@@ -43,9 +43,9 @@ const EmailVerification = ({email}) => {
 
   return (
     <div>
-      <input type="text" placeholder="Confirmation code" value={otp} onChange={(e) => setOtp(e.target.value)} />
       <button onClick={handleVerify}>Verify Email</button>
     {step > 0 && <button onClick={handleSendAgain} disabled={resendCooldown > 0}>
+      <input type="text" placeholder="Confirmation code" value={otp} onChange={(e) => setOtp(e.target.value)} />
         {resendCooldown > 0 && step > 0 ? `Resend in ${resendCooldown}s` : 'Send code again'}
       </button>}
       {status === 'email-verified' && <p>Email verified successfully!</p>}

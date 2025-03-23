@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
-
+import React from "react";
+import CartList from "../features/cart/components/CartList";
 
 const CartPage = () => {
-  useEffect(() => {
-    console.log("useEffect inside cart page")
-  }, [])
   return (
     <div>
+      <h1>Your Cart</h1>
+      <CartList />
     </div>
   );
 };
 
 export default CartPage;
-
 

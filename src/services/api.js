@@ -43,41 +43,41 @@ api.interceptors.response.use(
 
 // API Methods (GET, POST, etc.)
 const apiService = {
-  get: async (endpoint) => {
+  get: async (endpoint, options = {}) => {
     try {
-      const response = await api.get(endpoint);
+      const response = await api.get(endpoint, { ...options });
       return response.data;
     } catch (error) {
       throw error;
     }
   },
-  post: async (endpoint, data) => {
+  post: async (endpoint, data, options = {}) => {
     try {
-      const response = await api.post(endpoint, data);
+      const response = await api.post(endpoint, data, { ...options });
       return response.data;
     } catch (error) {
       throw error;
     }
   },
-  put: async (endpoint, data) => {
+  put: async (endpoint, data, options = {}) => {
     try {
-      const response = await api.put(endpoint, data);
+      const response = await api.put(endpoint, data, { ...options });
       return response.data;
     } catch (error) {
       throw error;
     }
   },
-  patch: async (endpoint, data) => {
+  patch: async (endpoint, data, options = {}) => {
     try {
-      const response = await api.patch(endpoint, data);
+      const response = await api.patch(endpoint, data, { ...options });
       return response.data;
     } catch (error) {
       throw error;
     }
   },
-  delete: async (endpoint) => {
+  delete: async (endpoint, options = {}) => {
     try {
-      const response = await api.delete(endpoint);
+      const response = await api.delete(endpoint, { ...options });
       return response.data;
     } catch (error) {
       throw error;
