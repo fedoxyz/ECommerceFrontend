@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { verifyEmail } from '../profileSlice';
 import { updateUser } from '../../auth/authSlice';
+import Button from '../../../components/common/Button';
 
 const EmailVerification = ({email}) => {
   const [step, setStep] = useState(0)
@@ -43,11 +44,11 @@ const EmailVerification = ({email}) => {
 
   return (
     <div>
-      <button onClick={handleVerify}>Verify Email</button>
-    {step > 0 && <button onClick={handleSendAgain} disabled={resendCooldown > 0}>
+      <Button onClick={handleVerify}>Verify Email</Button>
+    {step > 0 && <Button onClick={handleSendAgain} disabled={resendCooldown > 0}>
       <input type="text" placeholder="Confirmation code" value={otp} onChange={(e) => setOtp(e.target.value)} />
         {resendCooldown > 0 && step > 0 ? `Resend in ${resendCooldown}s` : 'Send code again'}
-      </button>}
+      </Button>}
       {status === 'email-verified' && <p>Email verified successfully!</p>}
       {status === 'email-verification-sent' && <p>Please check your email for confirmation code</p>}
       {error && <p>{error.message}</p>}

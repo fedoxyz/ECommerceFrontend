@@ -1,5 +1,6 @@
 import React from "react";
 import categoryService from "../categoryService";
+import Button from '../../../components/common/Button';
 
 const CategoryForm = ({ form, setForm, editingId, setEditingId, fetchCategories }) => {
   const handleChange = (e) => {
@@ -42,9 +43,9 @@ const CategoryForm = ({ form, setForm, editingId, setEditingId, fetchCategories 
         required
         className="border p-2 mr-2"
       />
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2">
+      <Button type="submit" className="bg-blue-500 text-white px-4 py-2">
         {editingId ? "Update" : "Create"}
-      </button>
+      </Button>
     </form>
   );
 };

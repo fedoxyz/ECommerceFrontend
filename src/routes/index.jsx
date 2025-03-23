@@ -6,6 +6,8 @@ import CartPage from '../pages/CartPage';
 import ProfilePage from '../pages/ProfilePage';
 import CategoryPage from '../pages/CategoryPage';
 import ProductsPage from '../pages/ProductsPage';
+import OrderPage from '../pages/OrderPage'
+import OrdersPage from '../pages/OrdersPage'
 
 // Protected route component
 import ProtectedRoute from './ProtectedRoute';
@@ -33,6 +35,22 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        } 
+      /> 
+      <Route 
+        path="/my-orders" 
+        element={
+          <ProtectedRoute>
+            <OrdersPage />
+          </ProtectedRoute>
+        } 
+      /> 
+      <Route 
+        path="/order/:id" 
+        element={
+          <ProtectedRoute>
+            <OrderPage />
           </ProtectedRoute>
         } 
       /> 

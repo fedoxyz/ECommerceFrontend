@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '../../../components/common/Button';
 
 const ProductItem = ({ product, handleEdit, handleDelete, handleAddToCart }) => {
   return (
@@ -15,24 +16,25 @@ const ProductItem = ({ product, handleEdit, handleDelete, handleAddToCart }) => 
         <p className="">Stock: {product.stock}</p>
       </div>
       <div className="">
-        <button
+        <Button
           onClick={() => handleEdit(product)}
           className=""
         >
           Edit
-        </button>
-        <button
+        </Button>
+        <Button
+          theme="danger"
           onClick={() => handleDelete(product.id)}
           className=""
         >
           Delete
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => handleAddToCart(product.id)}
           className=""
         >
           Add to cart
-        </button>
+        </Button>
       </div>
     </div>
   );

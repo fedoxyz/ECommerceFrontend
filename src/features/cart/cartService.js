@@ -22,6 +22,7 @@ const cartService = {
   updateItem: async (itemId, quantity) => {
     try {
       const response = await apiService.put(`/cart/items/${itemId}`, { quantity });
+      console.log(response)
       return response;
     } catch (error) {
       throw error;

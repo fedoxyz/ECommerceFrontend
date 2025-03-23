@@ -46,6 +46,9 @@ const Header = () => {
                 <Link to="/cart" style={styles.navLink}>Cart</Link>
               </li>
               <li style={styles.navItem}>
+                <Link to="/my-orders" style={styles.navLink}>My orders</Link>
+              </li>
+              <li style={styles.navItem}>
                 <Link to="/profile-settings" style={styles.navLink}>Profile</Link>
               </li>
               <li style={styles.navItem}>

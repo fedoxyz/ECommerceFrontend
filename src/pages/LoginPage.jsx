@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import LoginForm from '../features/auth/components/LoginForm';
 import { useNavigate } from 'react-router-dom';
 import ResetPasswordForm from '../features/auth/components/ResetPasswordForm';
+import Button from '../components/common/Button';
 
 const LoginPage = () => {
   const [isPasswordForgotten, setIsPasswordForgotten] = useState(false) 
@@ -20,12 +21,12 @@ const LoginPage = () => {
       {isPasswordForgotten ? (
         <ResetPasswordForm 
           onResetPasswordSuccess={handleResetPasswordSuccess}
-          footer={<button onClick={() => setIsPasswordForgotten(false)}>Back to Login</button>}
+          footer={<Button onClick={() => setIsPasswordForgotten(false)}>Back to Login</Button>}
         />
       ) : (
         <LoginForm 
           onLoginSuccess={handleLoginSuccess}
-          footer={<button onClick={() => setIsPasswordForgotten(true)}>Forgot Password?</button>}
+          footer={<Button onClick={() => setIsPasswordForgotten(true)}>Forgot Password?</Button>}
         />
       )}
     </div>

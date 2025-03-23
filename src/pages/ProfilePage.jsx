@@ -5,6 +5,7 @@ import ChangeEmail from '../features/profile/components/ChangeEmail';
 import ChangePassword from '../features/profile/components/ChangePassword';
 import { updateUserProfile } from '../features/profile/profileSlice';
 import { updateUser } from '../features/auth/authSlice';
+import Button from '../components/common/Button';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -50,9 +51,9 @@ const ProfilePage = () => {
 
       {/* Toggle Edit Mode */}
       {isEditing ? (
-        <button onClick={handleSave}>Save</button>
+        <Button onClick={handleSave}>Save</Button>
       ) : (
-        <button onClick={() => setIsEditing(true)}>Edit</button>
+        <Button onClick={() => setIsEditing(true)}>Edit</Button>
       )}
 
       {/* Email Section */}

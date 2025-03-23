@@ -60,7 +60,7 @@ const cartSlice = createSlice({
         state.items = action.payload.CartItems;
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
-        const updatedItem = action.payload[0]; // Assuming the payload is an array with one item
+        const updatedItem = action.payload; // Assuming the payload is an array with one item
         const itemIndex = state.items.findIndex(item => item.id === updatedItem.id);
         if (itemIndex !== -1) {
           state.items[itemIndex] = updatedItem; // Update with the correct object

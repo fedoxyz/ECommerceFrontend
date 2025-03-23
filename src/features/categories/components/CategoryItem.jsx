@@ -1,4 +1,5 @@
 import React from "react";
+import Button from '../../../components/common/Button';
 
 const CategoryItem = ({ category, handleEdit, handleDelete }) => {
   return (
@@ -7,12 +8,12 @@ const CategoryItem = ({ category, handleEdit, handleDelete }) => {
         <strong>{category.name}</strong>: {category.description}
       </div>
       <div>
-        <button onClick={() => handleEdit(category)} className="mr-2 text-blue-500">
+        <Button onClick={() => handleEdit(category)} className="mr-2 text-blue-500">
           Edit
-        </button>
-        <button onClick={() => handleDelete(category.id)} className="text-red-500">
+        </Button>
+        <Button theme="danger" onClick={() => handleDelete(category.id)} className="text-red-500">
           Delete
-        </button>
+        </Button>
       </div>
     </li>
   );

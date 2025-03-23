@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import productService from "../productService";
+import Button from '../../../components/common/Button';
 
 const ProductForm = ({ form, setForm, editingId, setEditingId, fetchProducts, categories }) => {
   const handleSubmit = async (e) => {
@@ -120,9 +121,9 @@ const ProductForm = ({ form, setForm, editingId, setEditingId, fetchProducts, ca
         />
       </div>
 
-      <button type="submit" className="btn btn-primary">
+      <Button type="submit" className="btn btn-primary">
         {editingId ? "Update" : "Create"} Product
-      </button>
+      </Button>
     </form>
   );
 };

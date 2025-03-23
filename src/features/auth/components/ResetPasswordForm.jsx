@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import apiService from '../../../services/api';
+import Button from '../../../components/common/Button';
 
 const ResetPasswordForm = ({onResetPasswordSuccess, footer}) => {
   const [formData, setFormData] = useState({
@@ -65,7 +66,7 @@ const ResetPasswordForm = ({onResetPasswordSuccess, footer}) => {
             <label>Email</label>
             <input type="email" name="email" value={formData.email} onChange={handleChange} required />
           </div>
-          <button type="submit">Request code</button>
+          <Button type="submit">Request code</Button>
         </form>
       ) : (
         <form onSubmit={handleResetPassword}>
@@ -81,7 +82,7 @@ const ResetPasswordForm = ({onResetPasswordSuccess, footer}) => {
             <label>Confirm Password</label>
             <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
           </div>
-          <button type="submit">Reset Password</button>
+          <Button type="submit">Reset Password</Button>
           {error && <p className="error">{error}</p>}
         </form>
       )}

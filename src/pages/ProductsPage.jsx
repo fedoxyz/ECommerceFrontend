@@ -4,6 +4,7 @@ import categoryService from "../features/categories/categoryService";
 import cartService from "../features/cart/cartService.js";
 import ProductList from "../features/products/components/ProductList";
 import ProductForm from "../features/products/components/ProductForm";
+import Button from '../components/common/Button.jsx';
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
@@ -178,19 +179,19 @@ const handleAddToCart = async (productId) => {
           </div>
 
           <div className="">
-            <button
+            <Button
               type="button"
               onClick={clearFilters}
               className=""
             >
               Clear Filters
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               className=""
             >
               Apply Filters
-            </button>
+            </Button>
           </div>
         </form>
       </div>

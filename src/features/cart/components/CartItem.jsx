@@ -1,12 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { updateCartItem, removeFromCart } from "../cartSlice";
+import Button from '../../../components/common/Button';
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
 
   const handleQuantityChange = (e) => {
-    console.log("anyone")
     dispatch(updateCartItem({ itemId: item.id, quantity: parseInt(e.target.value) }));
   };
 
@@ -16,10 +16,10 @@ const CartItem = ({ item }) => {
 
   return (
     <div className="cart-item">
-      <h3>{item.name}</h3>
+      <h3>{item.Product.name}{item.status == "abandoned" ? " - abandoned" : ""}</h3>
       <p>Price: ${item.price * item.quantity}</p>
       <input type="number" value={item.quantity} onChange={handleQuantityChange} min="1" />
-      <button onClick={handleRemove}>Remove</button>
+      <Button theme="danger" onClick={handleRemove}>Remove</Button>
     </div>
   );
 };

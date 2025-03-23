@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../authSlice';
+import Button from '../../../components/common/Button';
 
 const RegisterForm = ({ onRegisterSuccess }) => {
   const [formData, setFormData] = useState({
@@ -91,7 +92,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
         />
       </div>
       {error && <p className="error">{error}</p>}
-      <button type="submit">Register</button>
+      <Button type="submit">Register</Button>
     </form>
   );
 };

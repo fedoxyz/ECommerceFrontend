@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changePassword } from '../profileSlice';
+import Button from '../../../components/common/Button';
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -25,7 +26,7 @@ const ChangePassword = () => {
     <div>
       {step === 0 && (
         <>
-          <button onClick={handleChangePassword}>Update Password</button>
+          <Button onClick={handleChangePassword}>Update Password</Button>
         </>
       )}
       
@@ -49,7 +50,7 @@ const ChangePassword = () => {
             value={confirmNewPassword}
             onChange={(e) => setConfirmNewPassword(e.target.value)}
           />
-          <button onClick={handleChangePassword}>Submit</button>
+          <Button onClick={handleChangePassword}>Submit</Button>
         </>
       )}
 

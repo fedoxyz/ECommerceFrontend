@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../authSlice';
+import Button from '../../../components/common/Button';
 
 const LoginForm = ({ onLoginSuccess, footer }) => {
   const [formData, setFormData] = useState({
@@ -99,13 +100,13 @@ const LoginForm = ({ onLoginSuccess, footer }) => {
             onChange={handleChange}
             required
           />
-          <button type="submit">Submit code</button>
+          <Button type="submit">Submit code</Button>
           {otp.message && <p>{otp.message}</p>}
         </div>
       )}
       
       {error && <p className="error">{error}</p>}
-      {!otp.required && <button type="submit">Login</button>}
+      {!otp.required && <Button type="submit">Login</Button>}
     </form>
   );
 };

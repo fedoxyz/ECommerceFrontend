@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeEmail } from '../profileSlice';
+import Button from '../../../components/common/Button';
 import { updateUser } from '../../auth/authSlice';
 
   const ChangeEmail = () => {
@@ -49,6 +50,9 @@ import { updateUser } from '../../auth/authSlice';
             if (response.payload?.response?.status === 'success') {
               console.log('Email changed successfully');
               setStep(0);
+              setOldEmailOtp("");
+              setNewEmailOtp("");
+              setNewEmail("");
             } else {
               console.error('Failed to change email:', response.payload);
               // Optionally, show a UI error message
@@ -85,7 +89,7 @@ import { updateUser } from '../../auth/authSlice';
         />
       </>
     )}
-      <button onClick={handleChangeEmail}>Change Email</button>
+      <Button onClick={handleChangeEmail}>Change Email</Button>
       {status === 'email-changed' && <p>Email changed successfully!</p>}
       {error && <p>{error.message}</p>}
     </div>
