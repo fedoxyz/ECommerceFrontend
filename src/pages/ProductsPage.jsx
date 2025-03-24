@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import productService from "../features/products/productService.js";
 import categoryService from "../features/categories/categoryService";
 import cartService from "../features/cart/cartService.js";
 import ProductList from "../features/products/components/ProductList";
 import ProductForm from "../features/products/components/ProductForm";
 import Button from '../components/common/Button.jsx';
+import { useRef } from "react";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
@@ -12,20 +13,76 @@ const ProductsPage = () => {
   const [filters, setFilters] = useState({ search: "", categoryId: "", minPrice: "", maxPrice: "" });
   const [form, setForm] = useState({ name: "", description: "", price: "", categoryId: "", stock: "", imageUrl: "" });
   const [editingId, setEditingId] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const observer = useRef(null);
+  const [shouldFetch, setShouldFetch] = useState(true);
 
   useEffect(() => {
-    fetchProducts();
+    console.log("should fetch", shouldFetch)
+    if (shouldFetch) {
+      fetchProducts(page, page === 1);
+      setShouldFetch(false);
+    }
+  }, [shouldFetch]);
+
+  useEffect(() => {
     fetchCategories();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (pageNum, reset = false, limit=10) => {
+    console.log(hasMore, "hasMore")
+    if (!hasMore) return;
     try {
-      const response = await productService.getAllProducts(filters);
-      setProducts(response.products);
+      const response = await productService.getAllProducts({ ...filters, page: pageNum, limit: limit });
+      console.log("response", response);
+      
+      // Check for and prevent duplicates when adding new products
+      if (reset) {
+        setProducts(response.products);
+      } else {
+        // Use a Set or other method to deduplicate based on product ID
+        setProducts(prev => {
+          const existingIds = new Set(prev.map(p => p.id));
+          const uniqueNewProducts = response.products.filter(p => !existingIds.has(p.id));
+          return [...prev, ...uniqueNewProducts];
+        });
+      }
+      
+      if (response.products.length > 0) {
+        if (response.totalItems && (pageNum * limit) >= response.totalItems) {
+          setHasMore(false);
+          setShouldFetch(false);
+        }
+      } else {
+        setHasMore(false);
+      }
     } catch (error) {
       console.error("Error fetching products:", error);
+      setHasMore(false);
+    } finally {
+      setLoading(false);
     }
   };
+
+  const lastProductRef = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasMore) {
+            setShouldFetch(true);
+            setPage((prevPage) => prevPage + 1);
+          }
+        },
+        { threshold: 1.0 }
+      );
+      if (node) observer.current.observe(node);
+    },
+    [loading, hasMore]
+  );
 
   const fetchCategories = async () => {
     try {
@@ -83,9 +140,12 @@ const handleAddToCart = async (productId) => {
     });
   };
 
-  const handleFilterSubmit = (e) => {
+  const handleFilterSubmit = async (e) => {
     e.preventDefault();
-    fetchProducts();
+    setHasMore(true); // Reset hasMore when applying new filters
+    console.log(hasMore)
+    setPage(1); // Reset to page 1
+    setShouldFetch(true);
   };
 
   const clearFilters = () => {
@@ -203,7 +263,7 @@ const handleAddToCart = async (productId) => {
         fetchProducts={fetchProducts}
         categories={categories}
       />
-      <ProductList products={products} handleEdit={handleEdit} handleDelete={handleDelete} handleAddToCart={handleAddToCart} />
+      <ProductList products={products} handleEdit={handleEdit} handleDelete={handleDelete} handleAddToCart={handleAddToCart} lastProductRef={lastProductRef} />
     </div>
   );
 };

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { forwardRef} from 'react';
 import Button from '../../../components/common/Button';
 
-const ProductItem = ({ product, handleEdit, handleDelete, handleAddToCart }) => {
+const ProductItem = forwardRef(({ product, handleEdit, handleDelete, handleAddToCart }, ref) => {
+
+
   return (
-    <div className="">
+    <div className="" ref={ref}>
       <img
         src={product.imageUrl}
         alt={product.name}
@@ -38,6 +40,6 @@ const ProductItem = ({ product, handleEdit, handleDelete, handleAddToCart }) => 
       </div>
     </div>
   );
-};
+});
 
 export default ProductItem;

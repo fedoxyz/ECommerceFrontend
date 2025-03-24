@@ -1,9 +1,9 @@
 import apiService from "../../services/api"; // Adjust the import path if needed
 
 const productService = {
-  getAllProducts: async (filters) => {
+  getAllProducts: async (paramsData) => {
     try {
-      const response = await apiService.get("/products", { params: filters });
+      const response = await apiService.get("/products", { params: paramsData });
       return response;
     } catch (error) {
       throw error;
