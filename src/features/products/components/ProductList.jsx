@@ -2,6 +2,7 @@ import React from 'react';
 import ProductItem from './ProductItem';
 
 const ProductList = ({ products, handleEdit, handleDelete, handleAddToCart, lastProductRef }) => {
+
   return (
     <div className="">
       {products.length > 0 ? (

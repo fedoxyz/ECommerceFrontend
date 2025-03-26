@@ -6,8 +6,9 @@ import CartPage from '../pages/CartPage';
 import ProfilePage from '../pages/ProfilePage';
 import CategoryPage from '../pages/CategoryPage';
 import ProductsPage from '../pages/ProductsPage';
-import OrderPage from '../pages/OrderPage'
-import OrdersPage from '../pages/OrdersPage'
+import OrderPage from '../pages/OrderPage';
+import OrdersPage from '../pages/OrdersPage';
+import ProductPage from '../pages/ProductPage';
 
 // Protected route component
 import ProtectedRoute from './ProtectedRoute';
@@ -55,6 +56,12 @@ const AppRoutes = () => {
         } 
       /> 
 
+      <Route 
+        path="/product/:id" 
+        element={
+          <ProductPage />
+        } 
+      /> 
       <Route 
         path="/categories" 
         element={

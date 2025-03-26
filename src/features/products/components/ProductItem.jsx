@@ -1,11 +1,12 @@
 import React, { forwardRef} from 'react';
 import Button from '../../../components/common/Button';
+import { useNavigate } from 'react-router-dom';
 
-const ProductItem = forwardRef(({ product, handleEdit, handleDelete, handleAddToCart }, ref) => {
-
+const ProductItem = forwardRef(({ product, handleEdit, handleDelete, handleAddToCart, onClick }, ref) => {
+  const navigate = useNavigate()
 
   return (
-    <div className="" ref={ref}>
+    <div onClick={() => navigate(`/product/${product.id}`)} className="" ref={ref}>
       <img
         src={product.imageUrl}
         alt={product.name}
