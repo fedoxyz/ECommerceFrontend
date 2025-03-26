@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../features/auth/authSlice';
+import { SearchBar } from '../common/SearchBar';
 
 import styles from '../../styles/layout';
 
@@ -28,7 +29,7 @@ const Header = () => {
         <span style={styles.menuBar}></span>
         <span style={styles.menuBar}></span>
       </div>
-      
+      <SearchBar/> 
       <nav style={menuOpen ? {...styles.nav, ...styles.navOpen} : styles.nav}>
         <ul style={styles.navList}>
           <li style={styles.navItem}>
