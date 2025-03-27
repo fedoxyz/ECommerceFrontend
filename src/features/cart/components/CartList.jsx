@@ -11,9 +11,16 @@ const CartList = () => {
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
+  useEffect(() => {
+    console.log(items);
+  }, [items]);
 
   if (status === "loading") return <p>Loading...</p>;
   if (status === "failed") return <p>Error: {error}</p>;
+  
+  if (!items) {
+    return <div>Loading items</div>
+  }
 
   return (
     <div className="cart-list">

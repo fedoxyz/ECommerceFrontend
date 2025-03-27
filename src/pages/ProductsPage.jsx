@@ -1,70 +1,43 @@
 import React, { useEffect, useState, useCallback } from "react";
 import productService from "../features/products/productService.js";
 import categoryService from "../features/categories/categoryService";
-import cartService from "../features/cart/cartService.js";
+import { useSelector, useDispatch } from "react-redux";
 import ProductList from "../features/products/components/ProductList";
 import ProductForm from "../features/products/components/ProductForm";
 import Button from '../components/common/Button.jsx';
 import { useRef } from "react";
+import { fetchProducts } from "../features/products/productSlice.js";
+import { fetchCart } from "../features/cart/cartSlice.js";
 
 const ProductsPage = () => {
-  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const { products, hasMore, loading } = useSelector(state => state.product);
   const [filters, setFilters] = useState({ search: "", categoryId: "", minPrice: "", maxPrice: "" });
   const [form, setForm] = useState({ name: "", description: "", price: "", categoryId: "", stock: "", imageUrl: "" });
   const [editingId, setEditingId] = useState(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const observer = useRef(null);
   const [shouldFetch, setShouldFetch] = useState(true);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     console.log("should fetch", shouldFetch)
     if (shouldFetch) {
-      fetchProducts(page, page === 1);
+      dispatch(fetchProducts({
+        pageNum: page, 
+        reset: page === 1, 
+        filters: filters
+      }));
       setShouldFetch(false);
     }
-  }, [shouldFetch]);
+    console.log(products)
+  }, [shouldFetch, dispatch, page, filters]);
 
   useEffect(() => {
     fetchCategories();
+    dispatch(fetchCart());
   }, []);
-
-  const fetchProducts = async (pageNum, reset = false, limit=10) => {
-    console.log(hasMore, "hasMore")
-    if (!hasMore) return;
-    try {
-      const response = await productService.getAllProducts({ ...filters, page: pageNum, limit: limit });
-      console.log("response", response);
-      
-      // Check for and prevent duplicates when adding new products
-      if (reset) {
-        setProducts(response.products);
-      } else {
-        // Use a Set or other method to deduplicate based on product ID
-        setProducts(prev => {
-          const existingIds = new Set(prev.map(p => p.id));
-          const uniqueNewProducts = response.products.filter(p => !existingIds.has(p.id));
-          return [...prev, ...uniqueNewProducts];
-        });
-      }
-      
-      if (response.products.length > 0) {
-        if (response.totalItems && (pageNum * limit) >= response.totalItems) {
-          setHasMore(false);
-          setShouldFetch(false);
-        }
-      } else {
-        setHasMore(false);
-      }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      setHasMore(false);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const lastProductRef = useCallback(
     (node) => {
@@ -117,7 +90,6 @@ const ProductsPage = () => {
 
   const handleFilterSubmit = async (e) => {
     e.preventDefault();
-    setHasMore(true); // Reset hasMore when applying new filters
     console.log(hasMore)
     setPage(1); // Reset to page 1
     setShouldFetch(true);
@@ -126,9 +98,6 @@ const ProductsPage = () => {
   const clearFilters = () => {
     setFilters({ search: "", categoryId: "", minPrice: "", maxPrice: "" });
     // Fetch products without filters
-    productService.getAllProducts({})
-      .then(response => setProducts(response.products))
-      .catch(error => console.error("Error fetching products:", error));
   };
 
 

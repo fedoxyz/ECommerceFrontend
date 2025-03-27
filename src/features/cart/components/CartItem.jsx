@@ -10,6 +10,10 @@ const CartItem = ({ item }) => {
     dispatch(updateCartItem({ itemId: item.id, quantity: parseInt(e.target.value) }));
   };
 
+  useEffect(()=> {
+    console.log(item, "item inside CartItem")}
+  , [])
+
   const handleRemove = () => {
     dispatch(removeFromCart(item.id));
   };
