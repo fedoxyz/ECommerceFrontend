@@ -1,12 +1,14 @@
 import React, { forwardRef} from 'react';
 import Button from '../../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
+import AddToCart from './AddToCart';
 
-const ProductItem = forwardRef(({ product, handleEdit, handleDelete, handleAddToCart, onClick }, ref) => {
+const ProductItem = forwardRef(({ product, handleEdit, handleDelete }, ref) => {
   const navigate = useNavigate()
 
   return (
-    <div onClick={() => navigate(`/product/${product.id}`)} className="" ref={ref}>
+    <div  className="" ref={ref}>
+    <div onClick={() => navigate(`/product/${product.id}`)}>
       <img
         src={product.imageUrl}
         alt={product.name}
@@ -18,6 +20,7 @@ const ProductItem = forwardRef(({ product, handleEdit, handleDelete, handleAddTo
         <p className="">${product.price}</p>
         <p className="">Stock: {product.stock}</p>
       </div>
+    </div>
       <div className="">
         <Button
           onClick={() => handleEdit(product)}
@@ -32,12 +35,7 @@ const ProductItem = forwardRef(({ product, handleEdit, handleDelete, handleAddTo
         >
           Delete
         </Button>
-        <Button
-          onClick={() => handleAddToCart(product.id)}
-          className=""
-        >
-          Add to cart
-        </Button>
+        <AddToCart productId={product.id}/>
       </div>
     </div>
   );

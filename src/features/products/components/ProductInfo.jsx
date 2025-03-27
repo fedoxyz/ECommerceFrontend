@@ -1,51 +1,35 @@
-import React, { useEffect, useState } from "react";
-import productService from "../productService";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProduct } from "../productSlice";
 
 const ProductInfo = ({ productId }) => {
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const fetchProduct = async (productId) => {
-    try {
-      setLoading(true);
-      const response = await productService.getProductById(productId);
-      console.log("response", response);
-      setProduct(response);
-      setError(null);
-    } catch (error) {
-      console.error("Error fetching product:", error);
-      setError(error);
-      setProduct(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const dispatch = useDispatch();
+  const { currentProduct, loading, error } = useSelector(state => state.product);
 
   useEffect(() => {
     if (productId) {
-      fetchProduct(productId);
+      dispatch(fetchProduct(productId));
     }
-  }, [productId]);
+  }, [productId, dispatch]);
 
   if (loading) return <div>Loading product details...</div>;
   if (error) return <div>Error loading product: {error.message}</div>;
-  if (!product) return null;
+  if (!currentProduct) return null;
 
   return (
     <div className="product-info">
-      <h1>{product.name}</h1>
+      <h1>{currentProduct.name}</h1>
       <img 
-        src={product.image || '/placeholder-image.png'} 
-        alt={product.name} 
+        src={currentProduct.image || '/placeholder-image.png'} 
+        alt={currentProduct.name} 
         className="product-image"
       />
       <div className="product-details">
-        <p className="price">${product.price}</p>
-        <p className="description">{product.description}</p>
+        <p className="price">${currentProduct.price}</p>
+        <p className="description">{currentProduct.description}</p>
         <div className="additional-details">
-          <p>Category: {product.Category.name}</p>
-          <p>Stock: {product.stockQuantity} available</p>
+          <p>Category: {currentProduct.Category.name}</p>
+          <p>Stock: {currentProduct.stock}</p>
         </div>
       </div>
     </div>

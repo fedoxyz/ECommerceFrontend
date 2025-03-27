@@ -42,6 +42,7 @@ export const clearCart = createAsyncThunk("cart/clearCart", async (_, thunkAPI) 
   }
 });
 
+
 const cartSlice = createSlice({
   name: "cart",
   initialState: { items: [], status: "idle", error: null },
@@ -57,14 +58,23 @@ const cartSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
-        state.items = action.payload.CartItems;
+          console.log(action)
+          const existingItemIndex = state.items.findIndex(
+              item => item.id === action.payload.id
+          );
+          if (existingItemIndex !== -1) {
+              state.items = state.items.map(item => 
+                  item.id === action.payload.id ? action.payload : item
+              );
+          } else {
+              state.items.push(action.payload);
+          }
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
-        const updatedItem = action.payload; // Assuming the payload is an array with one item
-        const itemIndex = state.items.findIndex(item => item.id === updatedItem.id);
-        if (itemIndex !== -1) {
-          state.items[itemIndex] = updatedItem; // Update with the correct object
-        }
+        console.log(action);
+        state.items = state.items.map(item => 
+          item.id === action.payload.id ? action.payload : item
+        );
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
         const removedItemId = action.payload.itemId;

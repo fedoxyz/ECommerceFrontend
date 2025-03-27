@@ -98,31 +98,6 @@ const ProductsPage = () => {
     setEditingId(product.id);
   };
 
-const handleAddToCart = async (productId) => {
-  try {
-    // Step 1: Add to cart
-    const itemData = { productId, quantity: 1 };
-    await cartService.addItem(itemData);
-    
-    console.log("Item added to cart, now updating products");
-    console.log("Product ID to update:", productId);
-    console.log("Current products:", products);
-    
-    // Step 2: Simple update to products
-    setProducts(products.map(product => {
-      if (product.id === productId) {
-        console.log("Found product to update:", product);
-        return { ...product, stock: product.stock - 1 };
-      }
-      return product;
-    }));
-    
-    console.log("Products updated");
-  } catch (error) {
-    console.error("Error adding to cart:", error);
-  }
-};
-
   const handleDelete = async (id) => {
     try {
       await productService.removeProduct(id);
@@ -263,7 +238,7 @@ const handleAddToCart = async (productId) => {
         fetchProducts={fetchProducts}
         categories={categories}
       />
-      <ProductList products={products} handleEdit={handleEdit} handleDelete={handleDelete} handleAddToCart={handleAddToCart} lastProductRef={lastProductRef} />
+      <ProductList products={products} handleEdit={handleEdit} handleDelete={handleDelete} lastProductRef={lastProductRef} />
     </div>
   );
 };

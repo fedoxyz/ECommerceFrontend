@@ -4,6 +4,7 @@ const cartService = {
   getCart: async () => {
     try {
       const response = await apiService.get('/cart');
+      console.log(response)
       return response;
     } catch (error) {
       throw error;
