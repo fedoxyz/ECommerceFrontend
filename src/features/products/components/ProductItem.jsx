@@ -3,7 +3,7 @@ import Button from '../../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import AddToCart from './AddToCart';
 
-const ProductItem = forwardRef(({ product, handleEdit, handleDelete }, ref) => {
+const ProductItem = forwardRef(({ product, handleEdit, handleDelete, isAdmin }, ref) => {
   const navigate = useNavigate()
 
   return (
@@ -22,7 +22,7 @@ const ProductItem = forwardRef(({ product, handleEdit, handleDelete }, ref) => {
       </div>
     </div>
       <div className="">
-        <Button
+        {isAdmin && (<><Button
           onClick={() => handleEdit(product)}
           className=""
         >
@@ -34,9 +34,9 @@ const ProductItem = forwardRef(({ product, handleEdit, handleDelete }, ref) => {
           className=""
         >
           Delete
-        </Button>
+        </Button></>)}
         <AddToCart productId={product.id}/>
-      </div>
+      </div>)
     </div>
   );
 });

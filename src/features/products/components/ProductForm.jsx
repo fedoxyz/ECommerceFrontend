@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import productService from "../productService";
 import Button from '../../../components/common/Button';
 
-const ProductForm = ({ form, setForm, editingId, setEditingId, fetchProducts, categories }) => {
+const ProductForm = ({ form, setForm, editingId, setEditingId, fetchProducts, categories, isAdmin }) => {
+  if (!isAdmin) {
+    return null;
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
 

@@ -8,6 +8,7 @@ import Button from '../components/common/Button.jsx';
 import { useRef } from "react";
 import { fetchProducts } from "../features/products/productSlice.js";
 import { fetchCart } from "../features/cart/cartSlice.js";
+import {useAdminCheck} from "../hooks/useAdminCheck.js";
 
 const ProductsPage = () => {
   const [categories, setCategories] = useState([]);
@@ -18,6 +19,7 @@ const ProductsPage = () => {
   const [page, setPage] = useState(1);
   const observer = useRef(null);
   const [shouldFetch, setShouldFetch] = useState(true);
+  const { isAdmin } = useAdminCheck();
 
   const dispatch = useDispatch();
 
@@ -97,7 +99,7 @@ const ProductsPage = () => {
 
   const clearFilters = () => {
     setFilters({ search: "", categoryId: "", minPrice: "", maxPrice: "" });
-    // Fetch products without filters
+    setShouldFetch(true);
   };
 
 
@@ -206,8 +208,9 @@ const ProductsPage = () => {
         setEditingId={setEditingId}
         fetchProducts={fetchProducts}
         categories={categories}
+        isAdmin={isAdmin}
       />
-      <ProductList products={products} handleEdit={handleEdit} handleDelete={handleDelete} lastProductRef={lastProductRef} />
+      <ProductList products={products} handleEdit={handleEdit} handleDelete={handleDelete} lastProductRef={lastProductRef} isAdmin={isAdmin} />
     </div>
   );
 };

@@ -20,7 +20,7 @@ const CartItem = ({ item }) => {
 
   return (
     <div className="cart-item">
-      <h3>{item.Product.name}{item.status == "abandoned" ? " - abandoned" : ""}</h3>
+      <h3>{item?.Product?.name}{item.status == "abandoned" ? " - abandoned" : ""}</h3>
       <p>Price: ${item.price * item.quantity}</p>
       <input type="number" value={item.quantity} onChange={handleQuantityChange} min="1" />
       <Button theme="danger" onClick={handleRemove}>Remove</Button>

@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductItem from './ProductItem';
 
-const ProductList = ({ products, handleEdit, handleDelete, handleAddToCart, lastProductRef }) => {
+const ProductList = ({ products, handleEdit, handleDelete, handleAddToCart, lastProductRef, isAdmin }) => {
 
   return (
     <div className="">
@@ -13,6 +13,7 @@ const ProductList = ({ products, handleEdit, handleDelete, handleAddToCart, last
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             handleAddToCart={handleAddToCart}
+            isAdmin={isAdmin}
             ref={index === products.length - 1 ? lastProductRef : null}  // Attach ref to the last product
           />
         ))

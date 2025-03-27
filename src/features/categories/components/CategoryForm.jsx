@@ -2,7 +2,7 @@ import React from "react";
 import categoryService from "../categoryService";
 import Button from '../../../components/common/Button';
 
-const CategoryForm = ({ form, setForm, editingId, setEditingId, fetchCategories }) => {
+const CategoryForm = ({ form, setForm, editingId, setEditingId, fetchCategories, isAdmin }) => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -22,6 +22,10 @@ const CategoryForm = ({ form, setForm, editingId, setEditingId, fetchCategories 
       console.error("Error saving category:", error);
     }
   };
+
+  if (!isAdmin) {
+    return null;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="mb-4">

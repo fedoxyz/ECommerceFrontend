@@ -1,7 +1,7 @@
 import CategoryItem from "./CategoryItem";
 import React, { useEffect, useState } from "react";
 
-const CategoryList = ({ categories = [], handleEdit, handleDelete }) => {
+const CategoryList = ({ categories = [], handleEdit, handleDelete, isAdmin }) => {
   if (!categories || categories.length === 0) {
     return <p>No categories found.</p>;
   }
@@ -18,6 +18,7 @@ const CategoryList = ({ categories = [], handleEdit, handleDelete }) => {
           category={category}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
+          isAdmin={isAdmin}
         />
       ))}
     </ul>

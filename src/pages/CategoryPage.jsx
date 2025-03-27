@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import categoryService from "../features/categories/categoryService";
 import CategoryList from "../features/categories/components/CategoryList";
 import CategoryForm from "../features/categories/components/CategoryForm"
+import { useAdminCheck } from "../hooks/useAdminCheck";
 
 const CategoryPage = () => {
   const [categories, setCategories] = useState([]);
   const [form, setForm] = useState({ name: "", description: "" });
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { isAdmin } = useAdminCheck();
 
   useEffect(() => {
     fetchCategories();
@@ -48,8 +50,9 @@ const CategoryPage = () => {
         editingId={editingId}
         setEditingId={setEditingId}
         fetchCategories={fetchCategories}
+        isAdmin={isAdmin}
       />
-    {loading ? <p>Loading categories...</p> : <CategoryList categories={categories} handleEdit={handleEdit} handleDelete={handleDelete} />}
+    {loading ? <p>Loading categories...</p> : <CategoryList categories={categories} handleEdit={handleEdit} handleDelete={handleDelete} isAdmin={isAdmin} />}
     </div>
   );
 };
