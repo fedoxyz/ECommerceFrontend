@@ -6,19 +6,25 @@ import Button from '../../../components/common/Button';
 
 const CartList = () => {
   const dispatch = useDispatch();
-  const { items = [], status, error } = useSelector((state) => state.cart);
+  const { items, status, error } = useSelector((state) => state.cart);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
     // Only fetch if items are not already loaded
     if (status === 'idle' || status === 'failed') {
-      dispatch(fetchCart());
+      console.log(isAuthenticated)
+      dispatch(fetchCart(isAuthenticated));
     }
   }, [dispatch, status]);
+  useEffect(() => {
+    console.log(items.length, "items length")
+    console.log(items);
+  }, [items]);
 
   const calculateTotal = () => {
     return items.reduce((total, item) => {
       // Safely access price, use 0 if not available
-      const itemPrice = item.Product?.price || item.price || 0;
+      const itemPrice = item.price || 0;
       return total + (itemPrice * item.quantity);
     }, 0);
   };
@@ -32,7 +38,7 @@ const CartList = () => {
 
   return (
     <div className="cart-list">
-      {items.length === 0 ? (
+      {items.length < 1 ? (
         <p>Your cart is empty.</p>
       ) : (
         <>

@@ -35,7 +35,7 @@ const ProductItem = forwardRef(({ product, handleEdit, handleDelete, isAdmin }, 
         >
           Delete
         </Button></>)}
-        <AddToCart productId={product.id}/>
+        <AddToCart product={product}/>
       </div>)
     </div>
   );

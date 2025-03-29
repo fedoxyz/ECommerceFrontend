@@ -1,17 +1,9 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProduct } from "../productSlice";
+import { useSelector } from "react-redux";
 
-const ProductInfo = ({ productId }) => {
-  const dispatch = useDispatch();
+const ProductInfo = () => {
+
   const { currentProduct, loading, error } = useSelector(state => state.product);
-
-  useEffect(() => {
-    if (productId) {
-      dispatch(fetchProduct(productId));
-    }
-  }, [productId, dispatch]);
-
   if (loading) return <div>Loading product details...</div>;
   if (error) return <div>Error loading product: {error.message}</div>;
   if (!currentProduct) return null;

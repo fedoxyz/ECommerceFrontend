@@ -7,7 +7,8 @@ const CartItem = ({ item }) => {
   const dispatch = useDispatch();
 
   const handleQuantityChange = (e) => {
-    dispatch(updateCartItem({ itemId: item.id, quantity: parseInt(e.target.value) }));
+    const newValue = e.target.value === '' ? 0 : parseInt(e.target.value, 10);
+    dispatch(updateCartItem({ itemId: item.id, quantity: newValue }));
   };
 
   useEffect(()=> {
@@ -21,7 +22,7 @@ const CartItem = ({ item }) => {
   return (
     <div className="cart-item">
       <h3>{item?.Product?.name}{item.status == "abandoned" ? " - abandoned" : ""}</h3>
-      <p>Price: ${item.price * item.quantity}</p>
+      <p>Price: ${(item.price * item.quantity).toFixed(2)}</p>
       <input type="number" value={item.quantity} onChange={handleQuantityChange} min="1" />
       <Button theme="danger" onClick={handleRemove}>Remove</Button>
     </div>

@@ -26,9 +26,7 @@ const AppRoutes = () => {
       <Route 
         path="/cart" 
         element={
-          <ProtectedRoute>
             <CartPage />
-          </ProtectedRoute>
         } 
       />
       <Route 

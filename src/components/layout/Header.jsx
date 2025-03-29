@@ -41,11 +41,11 @@ const Header = () => {
           <li style={styles.navItem}>
             <Link to="/categories" style={styles.navLink}>Categories</Link>
           </li>
+          <li style={styles.navItem}>
+            <Link to="/cart" style={styles.navLink}>Cart</Link>
+          </li>
           {isAuthenticated ? (
             <>
-              <li style={styles.navItem}>
-                <Link to="/cart" style={styles.navLink}>Cart</Link>
-              </li>
               <li style={styles.navItem}>
                 <Link to="/my-orders" style={styles.navLink}>My orders</Link>
               </li>
