@@ -4,7 +4,7 @@ const orderService = {
   getUserOrders: async (page = 1, limit = 10) => {
     try {
       const response = await apiService.get(`/orders?page=${page}&limit=${limit}`);
-      return response.data;
+      return response;
     } catch (error) {
       throw error;
     }

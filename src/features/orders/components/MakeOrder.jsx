@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import Button from "../../../components/common/Button";
 import orderService from "../orderService";
 import { useNavigate } from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setHasFetchedCart} from "../../cart/cartSlice";
+
 
 const MakeOrder = () => {
   const [shippingAddress, setShippingAddress] = useState({})
-  
+  const dispatch = useDispatch();  
   const navigate = useNavigate();
 
   const mockAddress = {
@@ -25,6 +28,7 @@ const MakeOrder = () => {
     try {
       const order = await orderService.createOrder({shippingAddress: shippingAddress});
       navigate(`/order/${order.id}`);
+      dispatch(setHasFetchedCart(false));
       console.log(order)
     } catch (error) {
       console.log(error);
