@@ -13,6 +13,7 @@ import {useAdminCheck} from "../hooks/useAdminCheck.js";
 const ProductsPage = () => {
   const [categories, setCategories] = useState([]);
   const { products, hasMore, loading } = useSelector(state => state.product);
+  const { isAuthenticated } = useSelector(state => state.auth);
   const [filters, setFilters] = useState({ search: "", categoryId: "", minPrice: "", maxPrice: "" });
   const [form, setForm] = useState({ name: "", description: "", price: "", categoryId: "", stock: "", imageUrl: "" });
   const [editingId, setEditingId] = useState(null);
@@ -33,12 +34,11 @@ const ProductsPage = () => {
       }));
       setShouldFetch(false);
     }
-    console.log(products)
   }, [shouldFetch, dispatch, page, filters]);
 
   useEffect(() => {
     fetchCategories();
-    dispatch(fetchCart());
+    dispatch(fetchCart(isAuthenticated));
   }, []);
 
   const lastProductRef = useCallback(

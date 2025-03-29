@@ -3,25 +3,29 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../features/auth/authSlice';
 import { SearchBar } from '../common/SearchBar';
+import { useNavigate } from 'react-router-dom';
 
 import styles from '../../styles/layout';
+import { clearCart, setHasFetchedCart } from '../../features/cart/cartSlice';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { isAuthenticated, user } = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  
+  const navigate = useNavigate(); 
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(clearCart(true));
+    navigate("/");    
   };
 
   return (
     <header style={styles.header}>
       <div style={styles.logo}>
-        <Link to="/" style={styles.logoLink}>EShopApp</Link>
+        <Link to="/" style={styles.logoLink}>Arterique</Link>
       </div>
       
       <div style={styles.mobileMenuButton} onClick={toggleMenu}>

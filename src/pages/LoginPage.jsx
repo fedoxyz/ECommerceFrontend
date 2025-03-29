@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import LoginForm from '../features/auth/components/LoginForm';
-import { useNavigate } from 'react-router-dom';
 import ResetPasswordForm from '../features/auth/components/ResetPasswordForm';
 import Button from '../components/common/Button';
+import {setHasFetchedCart} from '../features/cart/cartSlice';
+import {useDispatch} from 'react-redux';
 
 const LoginPage = () => {
   const [isPasswordForgotten, setIsPasswordForgotten] = useState(false) 
-  const navigate = useNavigate();  // Create the navigate function
+  const dispatch = useDispatch(); 
 
   const handleLoginSuccess = (user) => {
     console.log('User logged in successfully:', user);
-    navigate('/');  
+    if (localStorage.getItem("guestCart")) {
+      localStorage.removeItem("guestCart");
+    }
+    dispatch(setHasFetchedCart(false)); 
   };
+
 
   const handleResetPasswordSuccess = (email) => {
     console.log('Password reset succhessfully for ', email);

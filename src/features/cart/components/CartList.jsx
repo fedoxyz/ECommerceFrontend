@@ -6,20 +6,19 @@ import Button from '../../../components/common/Button';
 
 const CartList = () => {
   const dispatch = useDispatch();
-  const { items, status, error } = useSelector((state) => state.cart);
+  const { items, status, error, hasFetchedCart } = useSelector((state) => state.cart);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
-    // Only fetch if items are not already loaded
-    if (status === 'idle' || status === 'failed') {
-      console.log(isAuthenticated)
+    console.log("useEffect in cart list triggered");
+    console.log(status);
+    console.log(hasFetchedCart) 
+    // Only fetch if cart hasn't been fetched yet or if status is idle/failed
+    if ((status === 'idle' || status === 'failed') && !hasFetchedCart) {
+      console.log("dispatching fetch cart isAuthenticated", isAuthenticated)
       dispatch(fetchCart(isAuthenticated));
     }
-  }, [dispatch, status]);
-  useEffect(() => {
-    console.log(items.length, "items length")
-    console.log(items);
-  }, [items]);
+  }, [dispatch, status, isAuthenticated]);
 
   const calculateTotal = () => {
     return items.reduce((total, item) => {

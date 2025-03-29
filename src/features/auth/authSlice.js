@@ -12,10 +12,12 @@ const initialState = {
   otp: {
     required: false,
     message: '',
-  }
+  },
+  isLoginProcessed: false
 };
 
 export const updateUser = createAction('auth/updateUser');
+
 
 // Helper function for error handling in thunks
 const handleError = (error) => {
@@ -81,6 +83,9 @@ const authSlice = createSlice({
       state.message = '';
       state.otp = { required: false, message: '' };
     },
+    processLogin: (state) => {
+      state.isLoginProcessed = true;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -105,9 +110,12 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.user = action.payload.user || null;
+        console.log(action);
+        state.user = action.payload.user;
+        console.log(state.user, "state user")
         state.isAuthenticated = !!action.payload.user;
         state.otp = action.payload.otp || { required: false, message: '' };
+        console.log("done")
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
@@ -119,12 +127,14 @@ const authSlice = createSlice({
       // Logout cases
       .addCase(logout.pending, (state) => {
         state.status = 'loading';
+        state.isLoginProcessed = false;
       })
       .addCase(logout.fulfilled, (state) => {
+        state.isLoginProcessed = false;
         state.user = null;
         state.isAuthenticated = false;
-        state.status = 'idle';
         state.otp = { required: false, message: '' };
+        state.status = "succeeded";
       })
       .addCase(logout.rejected, (state, action) => {
         state.status = 'failed';
@@ -135,9 +145,8 @@ const authSlice = createSlice({
         localStorage.setItem('user', JSON.stringify(state.user));
       });
       
-    // Note: We removed the addMatcher approach since addCase must come first
   },
 });
 
-export const { reset } = authSlice.actions;
+export const { reset, processLogin } = authSlice.actions;
 export default authSlice.reducer;

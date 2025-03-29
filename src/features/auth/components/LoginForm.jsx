@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../authSlice';
+import { login, processLogin } from '../authSlice';
 import Button from '../../../components/common/Button';
 
 const LoginForm = ({ onLoginSuccess, footer }) => {
@@ -13,11 +12,11 @@ const LoginForm = ({ onLoginSuccess, footer }) => {
 
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   
-  const { user, status, message, otp } = useSelector(
+  const { user, isAuthenticated, status, message, otp } = useSelector(
     (state) => state.auth
   );
+
   
   const displayOtpValue = otp.required && formData.otp === 'none' ? '' : formData.otp;
 
@@ -25,15 +24,19 @@ const LoginForm = ({ onLoginSuccess, footer }) => {
 
   // Reset error when component mounts
   useEffect(() => {
+    console.log("useEffect status")
+    console.log(status, user)
     if (status === "failed") {
       setError(message);
     } else if (status === "succeeded" && user) {
+      console.log("status succeeded")
       if (onLoginSuccess) {
+        console.log("if on login success")
         onLoginSuccess(user);
-        navigate('/');
       }
+      dispatch(processLogin());
     }
-  }, [user, status]);
+  }, [status, user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

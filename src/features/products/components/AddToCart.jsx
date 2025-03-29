@@ -35,6 +35,9 @@ const AddToCart = ({ product }) => {
       localStorage.setItem('guestCart', JSON.stringify(cartItems));
     }
   }, [cartItems, isAuthenticated]);
+  useEffect(() => {
+    console.log(cartItem, 'cartItem')
+  }, [cartItem]);
 
   const handleCartItem = (isAdding = true) => {
     try {
@@ -45,27 +48,24 @@ const AddToCart = ({ product }) => {
         }
         
         if (cartItem) {
-          console.log("cartItem exists", cartItem)
           // Increment existing cart item
           const newQuantity = cartItem.quantity + 1;
-          var itemData = { productId: product.id, quantity: newQuantity }
+          var itemData = { id: cartItem.id, productId: product.id, quantity: newQuantity }
           if (!isAuthenticated) {
             if (cartItem.quantity >= product.stock) {
               return;
             }
             console.log(product, 'product for unauthorized')
-            itemData = {...itemData, id: cartItem.id, price: product.price, Product: { name: product.name}}
+            itemData = {...itemData, price: product.price, Product: { name: product.name}}
             console.log(itemData)
           }
           dispatch(updateCartItem(itemData));
         } else {
           var itemData = { productId: product.id, quantity: 1 }
           if (!isAuthenticated) {
-            console.log(product, 'product for unauthorized')
             itemData = {...itemData, price: product.price, Product: { name: product.name}}
             console.log(itemData)
           }
-          console.log("adding item to cart", product.id)
           dispatch(addToCart(itemData));
         }
 

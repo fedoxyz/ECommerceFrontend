@@ -13,6 +13,7 @@ const cartService = {
 
   addItem: async (itemData) => {
     try {
+      console.log(itemData);
       const response = await apiService.post('/cart/items', itemData);
       return response;
     } catch (error) {

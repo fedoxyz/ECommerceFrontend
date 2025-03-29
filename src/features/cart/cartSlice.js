@@ -21,26 +21,35 @@ const saveGuestCartToStorage = (cart) => {
 };
 
 export const syncGuestCart = createAsyncThunk(
-  "cart/syncGuestCart", 
+  "cart/syncGuestCart",
   async (_, thunkAPI) => {
     try {
-      const guestCart = getGuestCartFromStorage();
-      
-      if (guestCart.length > 0) {
-        const syncedItems = await Promise.all(
-          guestCart.map(item => 
-            cartService.addItem({
-              productId: item.productId, 
-              quantity: item.quantity
-            })
-          )
-        );
+      const state = thunkAPI.getState();
+      const cartItems = state.cart.items; 
 
-        localStorage.removeItem('guestCart');
-        return syncedItems;
-      }
+      if (!Array.isArray(cartItems) || cartItems.length === 0) return [];
 
-      return [];
+      const results = await Promise.allSettled(
+        cartItems.map((item) =>
+          cartService.addItem({
+            productId: item.ProductId,
+            quantity: item.quantity,
+          })
+        )
+      );
+
+      const syncedItems = results
+        .filter((result) => result.status === "fulfilled")
+        .map((result) => result.value);
+
+      const failedItems = results
+        .filter((result) => result.status === "rejected")
+        .map((result, index) => ({
+          error: result.reason.response?.data || "Unknown error",
+          ProductId: cartItems[index].ProductId,
+        }));
+
+      return { syncedItems, failedItems }; 
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || "Failed to sync guest cart");
     }
@@ -144,7 +153,8 @@ export const updateCartItem = createAsyncThunk(
 
     // For authenticated users, use the existing service call
     try {
-      return await cartService.updateItem(itemId, quantity);
+      console.log("trying to update with quantitiy", itemData.quantity)
+      return await cartService.updateItem(itemData.id, itemData.quantity);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || "Failed to update item");
     }
@@ -182,13 +192,15 @@ export const removeFromCart = createAsyncThunk(
 
 export const clearCart = createAsyncThunk(
   "cart/clearCart", 
-  async (_, thunkAPI) => {
+  async (onLogout=false, thunkAPI) => {
+    if (onLogout) { return []; };
     const state = thunkAPI.getState();
     const isAuthenticated = state.auth.isAuthenticated;
 
     // Clear local storage for guest users
     if (!isAuthenticated) {
       localStorage.removeItem('guestCart');
+      console.log("clearning cart")
       return [];
     }
 
@@ -203,13 +215,17 @@ export const clearCart = createAsyncThunk(
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState: { items: [], status: "idle", error: null },
+  initialState: { items: [], status: "idle", error: null, hasFetchedCart: false },
   reducers: {
     setCart: (state, action) => {
       state.items = action.payload;
     },
     loadGuestCart: (state) => {
       state.items = getGuestCartFromStorage();
+    },
+    setHasFetchedCart: (state, action) => {
+      state.status = "idle";
+      state.hasFetchedCart = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -220,6 +236,7 @@ const cartSlice = createSlice({
       .addCase(fetchCart.fulfilled, (state, action) => {
         state.items = action.payload.CartItems || [];
         state.status = "succeeded";
+        state.hasFetchedCart = true;
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.status = "failed";
@@ -250,9 +267,16 @@ const cartSlice = createSlice({
       })
       .addCase(clearCart.fulfilled, (state) => {
         state.items = [];
+      })
+      .addCase(syncGuestCart.fulfilled, (state, action) => {
+        state.items = action.payload.syncedItems;
+      })
+      .addCase(syncGuestCart.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
       });
   },
 });
 
-export const { setCart, loadGuestCart } = cartSlice.actions;
+export const { setCart, loadGuestCart, setHasFetchedCart } = cartSlice.actions;
 export default cartSlice.reducer;
